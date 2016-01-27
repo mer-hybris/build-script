@@ -5,12 +5,9 @@ source "$TOOLDIR/utility-functions.inc"
 # The main script.
 # Resets the environment, updates the Mer SDK is necessary and passes on the task to the chroot.
 
-
-
 function dabspath {
     pushd "$1" > /dev/null && echo `pwd` && popd > /dev/null
 }
-
 
 function mdabspath {
     mkdir -p "$1"
@@ -20,8 +17,8 @@ function mdabspath {
 
 # Check if git is installed
 if ! which git >/dev/null; then
-        echo "WARRNING"
-        echo "you need git to run this script"
+        echo "I'm so sorry, but I couldn't find that git is installed."
+        echo "Use your package manager to install git"
         return
 fi
 
@@ -30,19 +27,19 @@ while (($#)); do
   -h)
     printf "Correct usage: `basename $0` [-option value]
     Valid options are:
-      -mer-root folder   # the place where you want MER_ROOT to point
-      -android-root folder # where to download 18GiB and compile a little of it
-      -vendor vendorName # vendor name
-      -device deviceName # device name
-      -branch branchName # branch name from mer hybris
-      -dhdrepo repo-uri  # dhd repo to be used if recompiling locally is to be avoided or x for none
-      -mwrepo repo-uri   # middleware repo to be used if recompiling locally is to be avoided or x for none
-      -extrarepo repo-uri # extra repo to be used if you want to pass extra packages or x for none
-      -jobs number       # number of parallel jobs to be used for parallel builds
-      -extraname name    # string to be added in the name of the image (beware, dots are not allowed)
-      -sfrelease x.y.z.p # release version of Sailfish OS against which the image is built
-      -dest folder       # where to place to the image
-      -target name       # target against which to build (empty for latest)
+      -mer-root folder     # The place where you want MER_ROOT to point
+      -android-root folder # Where to download ~18 GiB and compile a little of it
+      -vendor vendorName   # Name of the device vendor
+      -device deviceName   # Name of the device
+      -branch branchName   # Branch name from mer hybris
+      -dhdrepo repo-uri    # Dhd repo to be used if recompiling locally is to be avoided or x for none
+      -mwrepo repo-uri     # Middleware repo to be used if recompiling locally is to be avoided or x for none
+      -extrarepo repo-uri  # The Extra repo to be used if you want to pass extra packages or x for none
+      -jobs number         # Number of parallel jobs to be used for parallel builds
+      -extraname name      # String to be added in the name of the image (beware, dots are not allowed)
+      -sfrelease x.y.z.p   # Version of Sailfish OS to build the image for
+      -dest folder         # Where to place to the image
+      -target name         # Target against which to build (empty for latest)
       -h displays this help\n"
     exit 0
   ;;
@@ -112,7 +109,7 @@ while (($#)); do
     shift
   ;;
   *)
-    echo "unknown option! Use -h for the list of options!"
+    echo "Unknown option! Use the -h flag for the list of options!"
     exit 0
   ;;
   esac
@@ -128,17 +125,16 @@ test -n "$RELEASE"          && echo "  RELEASE=$RELEASE          "
 test -n "$EXTRA_STRING"     && echo "  EXTRA_STRING=$EXTRA_STRING"
 test -n "$BRANCH"           && echo "  BRANCH=$BRANCH            "
 test -n "$JOBS"             && echo "  JOBS=$JOBS                "
-test -n "$DHD_REPO"         && echo "  DHD_REPO=$DHD_REPO          "
+test -n "$DHD_REPO"         && echo "  DHD_REPO=$DHD_REPO        "
 test -n "$MW_REPO"          && echo "  MW_REPO=$MW_REPO          "
-test -n "$EXTRA_REPO"       && echo "  EXTRA_REPO=$EXTRA_REPO          "
-test -n "$TARGET"           && echo "  TARGET=$TARGET          "
-
+test -n "$EXTRA_REPO"       && echo "  EXTRA_REPO=$EXTRA_REPO    "
+test -n "$TARGET"           && echo "  TARGET=$TARGET            "
 
 [ -f ~/.hadk.env ] && source ~/.hadk.env
 
 # got to think a little more on the organisation and workflow of a multidevice setup
 EXTRA_HADK_ENV="${TOOLDIR}/device/$VENDOR/$DEVICE-hadk.env"
-[ -f ${EXTRA_HADK_ENV} ] && minfo "including default values from $EXTRA_HADK_ENV" || mwarn "default values file $EXTRA_HADK_ENV does not exist"
+[ -f ${EXTRA_HADK_ENV} ] && minfo "Including default values from $EXTRA_HADK_ENV" || mwarn "Default values file $EXTRA_HADK_ENV does not exist"
 [ -f ${EXTRA_HADK_ENV} ] && source ${EXTRA_HADK_ENV}
 unset EXTRA_HADK_ENV
 
@@ -162,7 +158,6 @@ export MW_REPO=\"\${MW_REPO:-$MW_REPO}\"
 export EXTRA_REPO=\"\${EXTRA_REPO:-$EXTRA_REPO}\"
 export TARGET=\"\${TARGET:-$TARGET}\"
 
-
 # printf \"vars in use:
 #     VENDOR=\$VENDOR
 #     DEVICE=\$DEVICE
@@ -182,7 +177,6 @@ export TARGET=\"\${TARGET:-$TARGET}\"
 #     EXTRA_REPO=\$EXTRA_REPO
 # \"
 " > ~/.hadk.env
-
 
 # echo $0
 
