@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <project path="device/samsung/zeroltexx" name="mer-hybris/android_device_samsung_zeroltexx" revision="hybris-14.1" />
+  <project path="kernel/samsung/exynos7420" name="mer-hybris/android_kernel_samsung_exynos7420" revision="hybris-14.1" />
+</manifest>
